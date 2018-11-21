@@ -1,28 +1,57 @@
 var guessedLetters = [];
-var movies = ["Jaws", "Jurassic Park", "Terminator", "Predator"];
+var remainingTurns = 9;
+var wins = 0;
+var losses = 0;
+var randomLetter = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+                "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; 
+
+$(document).ready(function(){
+
+var computerLetter = randomLetter[Math.floor(Math.random() * randomLetter.length)];  
+$("#wins").html("Wins: " + wins);
+$("#guesses").html("Remaining Turns: " + remainingTurns);
+$("#losses").html("Losses: " + losses)
 
 
 document.onkeyup = function (event) {
 
 var letter = event.key.toLowerCase();
 
-function guessLetter() {
-    console.log("You picked: " + letter);
-    guessedLetters.push(letter);
-    console.log("Number of Guesses: " + guessedLetters.length);
-}
+console.log(computerLetter);
 
-function prevGuess() {
+// displays which letter is pressed and then adds it to the guessedletters array.
+function guessLetter() {
     
-    for(var i = 0; i < guessedLetters.length; i++) {
-    console.log("Previous Guesses: " + guessedLetters);
+    guessedLetters.push(letter);
+    
+
+    if (letter === computerLetter) {
+        wins++;
+        reset();
+    }else {
+        remainingTurns--;
+    }
+
+    if (remainingTurns === 0){
+        losses++;
+        reset();
     }
     
+    $("#wins").html("Wins: " + wins);
+    $("#guesses").html("Remaining Turns: " + remainingTurns);
+    $("#losses").html("Losses: " + losses)
+    $("#prevGuesses").html("Previous Letters: " + guessedLetters); 
+   
 }
-
 guessLetter();
-prevGuess();
-
 }
 
+function reset() {
+    remainingTurns = 9;
+    guessedLetters = [];
+    computerLetter = randomLetter[Math.floor(Math.random() * randomLetter.length)];
+    console.log(guessedLetters.length);
+}
+
+});
 
